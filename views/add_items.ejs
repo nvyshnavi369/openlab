@@ -1,0 +1,67 @@
+
+            <title> Add Products</title>    
+                    <body style="background-color:white;back">
+                            <svg height="130" width="500">
+                            <defs>
+                              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%"
+                                style="stop-color:navy;stop-opacity:1" />
+                                <stop offset="100%"
+                                style="stop-color:blue;stop-opacity:1" />
+                              </linearGradient>
+                            </defs>
+                            <ellipse cx="85" cy="70" rx="65" ry="55" fill="url(#grad1)" />
+                            <text fill="#000000" font-size="35" font-family="Verdana"
+                            x="37" y="86">DELICIOUS</text>
+                          </svg>
+
+
+                <form method="POST" action="/add_items">
+                <h1>Add Products</h1>
+                <fieldset>
+                 
+                  </select>
+                  <label>Select category</label>
+                  <select name="pcategory" required="select">
+                        <option selected disabled value="">---</option>
+                        <option value="starters">starters</option>
+                        <option value="biryanis">main course</option>
+                        <option value="desserts">desserts</option>
+                        <option value="soft_drinks">bevarages</option>
+                        <option value="soft_drinks">breads</option>
+                  </select>
+                 
+                  <label>Product name</label>
+                  <input type="text" name="pname" maxlength="50" size="35" placeholder="" required>
+                  <label>Product cost</label>
+                  <input type="number" name="pcost" min="5" max="200" maxlength="10" size="35" required>  
+                  <label>Product quantity</label>
+                  <input type="number" name="pqty" min="1" max="50" maxlength="10" size="35" required>
+                 
+
+                </fieldset>
+               
+                <br><br><br>
+                <button type="submit">Add Product</button>
+            </form>
+
+
+            
+            <form>
+            <h1>Delete Product</h1>
+              </select>
+              <label>Select category</label>
+              <select>
+                    <option>---</option>
+                    <option>starters</option>
+                    <option>biryanis</option>
+                    <option>desserts</option>
+                    <option>soft drinks</option>
+              </select>
+             
+              <label>Product name</label>
+              <input type="text" name="pname" maxlength="50" size="35" placeholder="" required>
+             
+              <br><br><br>
+                <button type="submit">Delete</button>
+              </form>

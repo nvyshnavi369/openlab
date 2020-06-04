@@ -1,0 +1,91 @@
+<script>
+
+		
+	function speek(){
+		console.log('welcome');
+		 if ('speechSynthesis' in window) {
+  	console.log('1');
+  	var utterance = new SpeechSynthesisUtterance('welcome to namma Restaurant,order please....');
+  	setTimeout(() => {
+    utterance.voice =speechSynthesis.getVoices()[0];
+    },10);
+    speechSynthesis.speak(utterance);
+
+      /* speech synthesis supported */
+  }
+  else {
+  	console.log('0');
+      /* speech synthesis not supported */
+  }
+		var f = document.getElementById("frm");
+        f.setAttribute('method',"post");
+        f.setAttribute('action','/start');
+	}
+</script>
+
+
+
+
+<title>Restaurant</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<style>
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+div.b {
+  font-size: large;
+}
+p.b {
+  font-style: oblique;
+  color:white;
+  font-size:50px;
+}
+h1{
+background-color: #80ced6;
+ }
+.button2 {border-radius: 50%;
+font-family: 'Courier'; font-size: 60px;}
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+body{
+background-image: url('https://casasensei.com/wp-content/uploads/2019/06/South-Indian-Bruschetta-Recipe.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+}
+</style>
+<h1>
+<div class="heade">
+<p class = 'b' style="text-align:center">NAMMA RESTAURANT</p>
+</h1>
+</div>
+</head>
+<body>
+<div class="center">
+	<form  id="frm">
+  <button class="button button2" onclick="speek()">Start</button>
+</form>
+</div>
+
+
+
+
+
