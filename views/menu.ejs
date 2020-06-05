@@ -52,88 +52,34 @@ background-color: #80ced6;
                 <h1 style="text-align:center; ">Welcome to Namma Restaurant!</h1>
                 <h2 style="text-align:center; ">Taste the best food!!!</h2>
             </div>
-           
+       <h2>Starters</h2>    
       <table style="width:100%">
   <tr>
     <th>Item</th>
     <th>Price</th>
   </tr>
-  <% starters.forEach(function(thing){ %>
+  <% for(var i=0; i<starters.length; i++){ %>
   <tr>
-         <td><%=appids[i].appid %></td>
+         <td><%=starters[i][0] %></td>
+         <td><%=starters[i][1] %></td>
          
    </tr>
-   <% }) %>
+   <% } %>
   
 </table>
 <h2>Main course</h2>
  <table style="width:100%">
   <tr>
-    <th>Foodname</th>
-    <th>Price</th>
-  </tr>
-  <tr>
-    <td>Chicken Biryani</td>
-    <td>250</td>
-  </tr>
-  <tr>
-    <td>Mutton Biryani</td>
-    <td>250</td>
-  </tr>
-  <tr>
-    <td>Panner Biryani</td>
-    <td>250</td>
-  </tr>
-  <tr>
-    <td>Mushroom Biryani</td>
-    <td>250</td>
-  </tr>
-</table>
-<h2>Breads</h2>
- <table style="width:100%">
-  <tr>
     <th>Item</th>
     <th>Price</th>
   </tr>
+  <% for(var i=0; i<mainCourse.length; i++){ %>
   <tr>
-    <td>Chapati</td>
-    <td>250</td>
-  </tr>
-  <tr>
-    <td>Butter Naan</td>
-    <td>250</td>
-  </tr>
-  <tr>
-    <td>Garlic Naan</td>
-    <td>250</td>
-  </tr>
-</table>
-<h2>Beverages</h2>
- <table style="width:100%">
-  <tr>
-    <th>Drink</th>
-    <th>Price</th>
-  </tr>
-  <tr>
-    <td>Pepsi</td>
-    <td>80</td>
-  </tr>
-  <tr>
-    <td>Coke</td>
-    <td>85</td>
-  </tr>
-  <tr>
-    <td>Sprite</td>
-    <td>80</td>
-  </tr>
-  <tr>
-    <td>Virgin Mojito</td>
-    <td>150</td>
-  </tr>
-  <tr>
-    <td>Peppermint Shake</td>
-    <td>150</td>
-  </tr>
+         <td><%=mainCourse[i][0] %></td>
+         <td><%=mainCourse[i][1] %></td>
+         
+   </tr>
+   <% } %>
 </table>
 <h2>Desserts</h2>
  <table style="width:100%">
@@ -141,22 +87,54 @@ background-color: #80ced6;
     <th>Item</th>
     <th>Price</th>
   </tr>
+  <% for(var i=0; i<desserts.length; i++){ %>
   <tr>
-    <td>Black Forest</td>
-    <td>230</td>
-  </tr>
+         <td><%=desserts[i][0] %></td>
+         <td><%=desserts[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+<h2>Beverages</h2>
+ <table style="width:100%">
   <tr>
-    <td>Black Current</td>
-    <td>250</td>
+    <th>Drink</th>
+    <th>Price</th>
   </tr>
+  <% for(var i=0; i<bevarages.length; i++){ %>
   <tr>
-    <td>Almond and Date</td>
-    <td>180</td>
-  </tr>
+         <td><%=bevarages[i][0] %></td>
+         <td><%=bevarages[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+<h2>Breads</h2>
+ <table style="width:100%">
   <tr>
-    <td>Honey Cheese Cake</td>
-    <td>199</td>
+    <th>Item</th>
+    <th>Price</th>
   </tr>
+   <% for(var i=0; i<breads.length; i++){ %>
+  <tr>
+         <td><%=breads[i][0] %></td>
+         <td><%=breads[i][1] %></td>
+         
+   </tr>
+   <% } %>
+   <h2>Curries</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+   <% for(var i=0; i<curries.length; i++){ %>
+  <tr>
+         <td><%=curries[i][0] %></td>
+         <td><%=curries[i][1] %></td>
+         
+   </tr>
+   <% } %>
 </table>
  <footer>
             <div class="container">

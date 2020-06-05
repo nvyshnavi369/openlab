@@ -151,6 +151,15 @@ app.get("/start",function(req,res){
    d.push(dd);
   });
 });
+  var f=[];
+  database.ref('/items/curries').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    ff=[name,cost];
+   f.push(ff);
+  });
+});
   var e=[];
   database.ref('/items/breads').once('value',function(item) {
   item.forEach(function(i){
@@ -159,31 +168,75 @@ app.get("/start",function(req,res){
     ee=[name,cost];
    e.push(ee);
   });
-  res.render("menu.ejs",{starters:a,mainCourse:b,desserts:c,bevarages:d,breads:e});
+  res.render("menu.ejs",{starters:a,mainCourse:b,desserts:c,bevarages:d,breads:e,curries:f});
 });
 });
 app.get("/extras",function(req,res){
-  res.render("extras.ejs");
+  var e=[];
+  database.ref('/extras').once('value',function(item) {
+  item.forEach(function(i){
+    var c=i.val();
+   e.push(c);
+  });
+  res.render("extras.ejs",{items:e});
+});
 });
 app.get("/add_items",function(req,res){
-  var d=[];
-  database.ref('/items').once('value',function(item) {
-  item.forEach(function(cat){
-    var category=cat.key;
-    var c=[];
-    cat.forEach(function(name){ 
-      var nam=name.key;
-     var a={};
-      a[nam]=name.val();
-      c.push(a);
-    });
-    var b={};
-    b[category]=c;
-    d.push(b);
+  var a=[];
+  database.ref('/items/starters').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    aa=[name,cost];
+   a.push(aa);
   });
-  console.log(d);
 });
-  res.render("add_items.ejs",{items:d});
+  var b=[];
+  database.ref('/items/mainCourse').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    bb=[name,cost];
+   b.push(bb);
+  });
+});
+  var c=[];
+  database.ref('/items/desserts').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    cc=[name,cost];
+   c.push(cc);
+  });
+});
+  var d=[];
+  database.ref('/items/beverages').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    dd=[name,cost];
+   d.push(dd);
+  });
+});
+  var f=[];
+  database.ref('/items/curries').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    ff=[name,cost];
+   f.push(ff);
+  });
+});
+  var e=[];
+  database.ref('/items/breads').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    ee=[name,cost];
+   e.push(ee);
+  });
+  res.render("add_items.ejs",{starters:a,mainCourse:b,desserts:c,bevarages:d,breads:e,curries:f});
+});
 });
 app.post('/start',function(req,res){
   res.redirect("/start");
@@ -199,6 +252,12 @@ app.post('/add_items',function(req,res){
   });
   res.redirect("/");
 });
+app.post('/delete_item',function(req,res){
+  var a=req.body.pname;
+  var c=req.body.pcategory;
+  let rem=database.ref('/items/'+c+'/'+a).remove();
+  res.redirect("/");
+})
 
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("connectedaa");

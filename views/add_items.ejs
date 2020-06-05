@@ -1,7 +1,41 @@
 
-            <title> Add Products</title>    
+<style>
+  body{
+background-image: url('https://casasensei.com/wp-content/uploads/2019/06/South-Indian-Bruschetta-Recipe.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+}
+              a{
+                  text-decoration: none;
+                  color:#FFF;
+              }
+              .caption
+              {
+                  text-align: center;
+              }
+    table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  font-size: 20px;
+  background-color: rgb();
+}
+th, td {
+  padding: 15px;
+}
+th{
+  background-color: rgb(0,139,139);
+}
+td{
+  background-color: rgb(211,211,211);
+}
+.jumbotron{
+background-color: #80ced6;
+}
+</style>
+<title> Add Products</title>    
                     <body style="background-color:white;back">
-                            <svg height="130" width="500">
+<svg height="130" width="500">
                             <defs>
                               <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%">
                                 <stop offset="0%"
@@ -11,12 +45,105 @@
                               </linearGradient>
                             </defs>
                             <ellipse cx="85" cy="70" rx="65" ry="55" fill="url(#grad1)" />
-                            <text fill="#000000" font-size="35" font-family="Verdana"
+                            <text fill="#000000" font-size="35" font-family="Verdana" 
                             x="37" y="86">DELICIOUS</text>
-                          </svg>
+</svg>
+<div class="Container">            
+<h2>Starters</h2>    
+      <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+  <% for(var i=0; i<starters.length; i++){ %>
+  <tr>
+         <td><%=starters[i][0] %></td>
+         <td><%=starters[i][1] %></td>
+         
+   </tr>
+   <% } %>
+  
+</table>
+<h2>Main course</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+  <% for(var i=0; i<mainCourse.length; i++){ %>
+  <tr>
+         <td><%=mainCourse[i][0] %></td>
+         <td><%=mainCourse[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+<h2>Desserts</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+  <% for(var i=0; i<desserts.length; i++){ %>
+  <tr>
+         <td><%=desserts[i][0] %></td>
+         <td><%=desserts[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+<h2>Beverages</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Drink</th>
+    <th>Price</th>
+  </tr>
+  <% for(var i=0; i<bevarages.length; i++){ %>
+  <tr>
+         <td><%=bevarages[i][0] %></td>
+         <td><%=bevarages[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+<h2>Breads</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+   <% for(var i=0; i<breads.length; i++){ %>
+  <tr>
+         <td><%=breads[i][0] %></td>
+         <td><%=breads[i][1] %></td>
+         
+   </tr>
+   <% } %>
+ </table>
+<h2>Curries</h2>
+ <table style="width:100%">
+  <tr>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+   <% for(var i=0; i<curries.length; i++){ %>
+  <tr>
+         <td><%=curries[i][0] %></td>
+         <td><%=curries[i][1] %></td>
+         
+   </tr>
+   <% } %>
+</table>
+
+</div>
 
 
-                <form method="POST" action="/add_items">
+
+            
+                            
+
+<footer style="position:fixed; right: 0;bottom:0;padding: 12px 28px;">
+                <form method="POST" action="/add_items" >
                 <h1>Add Products</h1>
                 <fieldset>
                  
@@ -25,14 +152,14 @@
                   <select name="pcategory" required="select">
                         <option selected disabled value="">---</option>
                         <option value="starters">starters</option>
-                        <option value="biryanis">main course</option>
+                        <option value="mainCourse">main course</option>
                         <option value="desserts">desserts</option>
-                        <option value="soft_drinks">bevarages</option>
-                        <option value="soft_drinks">breads</option>
+                        <option value="bevarages">bevarages</option>
+                        <option value="breads">breads</option>
                   </select>
                  
                   <label>Product name</label>
-                  <input type="text" name="pname" maxlength="50" size="35" placeholder="" required>
+                  <input type="text" name="pname" maxlength="50" size="35" required>
                   <label>Product cost</label>
                   <input type="number" name="pcost" min="5" max="200" maxlength="10" size="35" required>  
                   <label>Product quantity</label>
@@ -47,21 +174,23 @@
 
 
             
-            <form>
+            <form method="POST" action="/delete_item">
             <h1>Delete Product</h1>
               </select>
               <label>Select category</label>
-              <select>
-                    <option>---</option>
-                    <option>starters</option>
-                    <option>biryanis</option>
-                    <option>desserts</option>
-                    <option>soft drinks</option>
+              <select required="select" name="pcategory">
+                     <option selected disabled value="">---</option>
+                        <option value="starters">starters</option>
+                        <option value="mainCourse">main course</option>
+                        <option value="desserts">desserts</option>
+                        <option value="bevarages">bevarages</option>
+                        <option value="breads">breads</option>
               </select>
              
               <label>Product name</label>
-              <input type="text" name="pname" maxlength="50" size="35" placeholder="" required>
+              <input type="text" name="pname" maxlength="50" size="35" required>
              
               <br><br><br>
                 <button type="submit">Delete</button>
               </form>
+            </footer>

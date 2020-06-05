@@ -61,21 +61,11 @@ td{
   <tr>
     <th>Item</th>
   </tr>
+   <% for(var i=0; i<items.length; i++){ %>
   <tr>
-    <td>Tissues</td>
-  </tr>
-  <tr>
-    <td>Water</td>
-  </tr>
-  <tr>
-    <td>Tomato sauce</td>
-  </tr>
-  <tr>
-    <td>Salt</td>
-  </tr>
-   <tr>
-    <td>Pepper</td>
-  </tr>
+         <td><%=items[i] %></td>    
+   </tr>
+   <% } %>
 </table>
 </div>
     
