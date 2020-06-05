@@ -143,7 +143,7 @@ app.get("/start",function(req,res){
   });
 });
   var d=[];
-  database.ref('/items/beverages').once('value',function(item) {
+  database.ref('/items/bevarages').once('value',function(item) {
   item.forEach(function(i){
     var name=i.key;
     var cost=i.val().cost;
@@ -210,7 +210,7 @@ app.get("/add_items",function(req,res){
   });
 });
   var d=[];
-  database.ref('/items/beverages').once('value',function(item) {
+  database.ref('/items/bevarages').once('value',function(item) {
   item.forEach(function(i){
     var name=i.key;
     var cost=i.val().cost;
