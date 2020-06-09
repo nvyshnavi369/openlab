@@ -97,7 +97,36 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
     if(result.intent.displayName=="order")
     {
        console.log(result.parameters.fields.items.listValue.values);
-       console.log(result.parameters.fields.quantity.stringValue);
+       list=result.parameters.fields.items.listValue.values;
+       items=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['stringValue'])
+        items.push(list[i]['stringValue']);
+       }
+       console.log(result.parameters.fields.number.listValue.values);
+       list=result.parameters.fields.number.listValue.values;
+       quantity=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['numberValue'])
+        quantity.push(list[i]['numberValue']);
+       }
+       if(quantity.length==0){
+        for(var i=0;i<items.length;i=i+1){
+          a=items[i];
+          database.ref('/orders/'+c+'/items/').update({
+            [a]:1
+          });
+        }
+       }
+       else{
+        for(var i=0;i<items.length;i=i+1){
+           a=items[i];
+           b=quantity[i];
+          database.ref('/orders/'+c+'/items/').update({
+            [a]:b
+          });
+        }
+       }
      }
   } else {
     console.log(`  No intent matched.`);
@@ -111,7 +140,11 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
 
 
 app.use(express.static("public"));
+c="table1";
 app.get("/",function(req,res){
+  database.ref('/orders/'+c+'/').set({
+   'id':c
+  });
   res.render("first.ejs");
 });
 app.get("/start",function(req,res){
