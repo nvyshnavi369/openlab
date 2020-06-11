@@ -1,3 +1,33 @@
+<script>
+
+    
+  function speek(){
+    console.log('extras');
+     if ('speechSynthesis' in window) {
+    console.log('1');
+    var utterance = new SpeechSynthesisUtterance('do you want something else ?');
+    setTimeout(() => {
+    utterance.voice =speechSynthesis.getVoices()[0];
+    },10);
+    speechSynthesis.speak(utterance);
+
+      /* speech synthesis supported */
+  }
+  else {
+    console.log('0');
+      /* speech synthesis not supported */
+  }
+    var f = document.getElementById("frm");
+        f.setAttribute('method',"get");
+        f.setAttribute('action','/extras');
+  }
+</script>
+
+
+
+
+
+
 <form id="my-msg" method="POST">
 <label >order</label>
     <input type="text" name="message" id="speechToText" placeholder="Speak Something" >
@@ -140,8 +170,8 @@ background-color: #80ced6;
  <footer>
             <div class="container">
                 <center>
-                	<form action="/extras" method="get">
-                   <button class="btn btn-primary" style="position:fixed; right: 0;bottom:0;padding: 12px 28px;">Extras</button>       
+                	<form id="frm">
+                   <button  class="btn btn-primary" onclick="speek()" style="position:fixed; right: 0;bottom:0;padding: 12px 28px;">Extras</button>       
                     </form>
                 </center>
             </div>

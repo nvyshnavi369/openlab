@@ -1,4 +1,7 @@
-
+<form id="my-msg" method="POST">
+<label >order</label>
+    <input type="text" name="message" id="speechToText" placeholder="Speak Something" >
+</form>
         <title>Restaurant</title>
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >  
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -48,7 +51,7 @@ td{
                       </style>
     
     
-         
+         <body onload="record()">
         <div class="container">
             <div class="jumbotron">
                 <h1 style="text-align:center; ">Namma Restaurant!</h1>
@@ -68,4 +71,51 @@ td{
    <% } %>
 </table>
 </div>
+</body>
+
+
+
+<script>
+        function record() {
+            var recognition = new webkitSpeechRecognition();
+            recognition.lang = "en-GB";
+
+            recognition.onresult = function(event) {
+                // console.log(event);
+                document.getElementById('speechToText').value = event.results[0][0].transcript;
+                fetchmsg();
+            }
+                recognition.start();
+              recognition.continuous=true;
+            recognition.addEventListener('end', function() { 
+              record();
+            });
+
+        } 
+     function fetchmsg(){
+     console.log('ss');
+     var url = 'http://localhost:3000/send-msg';
+      
+      const data = new URLSearchParams();
+      for (const pair of new FormData(document.getElementById("my-msg"))) {
+          data.append(pair[0], pair[1]);
+          console.log(pair)
+      }
     
+      console.log("abc",data)
+        fetch(url, {
+          method: 'POST',
+          body:data
+        }).then(res => res.json())
+         .then(response => {
+          console.log(response);
+        //  serverMessage(response.Reply);
+          speechSynthesis.speak( new SpeechSynthesisUtterance(response.Reply))
+        
+          
+         })
+          .catch(error => console.error('Error h:', error));
+
+}
+       
+    </script>

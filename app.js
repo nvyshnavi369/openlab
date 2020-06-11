@@ -128,9 +128,44 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
         }
        }
      }
+     if(result.intent.displayName=="extras")
+    {
+       console.log(result.parameters.fields.extras.listValue.values);
+       list=result.parameters.fields.extras.listValue.values;
+       items=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['stringValue'])
+        items.push(list[i]['stringValue']);
+       }
+       console.log(result.parameters.fields.number.listValue.values);
+       list=result.parameters.fields.number.listValue.values;
+       quantity=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['numberValue'])
+        quantity.push(list[i]['numberValue']);
+       }
+       if(quantity.length==0){
+        for(var i=0;i<items.length;i=i+1){
+          a=items[i];
+          database.ref('/orders/'+c+'/extras/').update({
+            [a]:1
+          });
+        }
+       }
+       else{
+        for(var i=0;i<items.length;i=i+1){
+           a=items[i];
+           b=quantity[i];
+          database.ref('/orders/'+c+'/extras/').update({
+            [a]:b
+          });
+        }
+       }
+     }
   } else {
     console.log(`  No intent matched.`);
   }
+
   return result.fulfillmentText;
 }
 
@@ -141,7 +176,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
 
 app.use(express.static("public"));
 c="table1";
-app.get("/",function(req,res){
+app.get("/a",function(req,res){
   database.ref('/orders/'+c+'/').set({
    'id':c
   });
@@ -214,7 +249,7 @@ app.get("/extras",function(req,res){
   res.render("extras.ejs",{items:e});
 });
 });
-app.get("/add_items",function(req,res){
+app.get("/",function(req,res){
   var a=[];
   database.ref('/items/starters').once('value',function(item) {
   item.forEach(function(i){
@@ -271,17 +306,31 @@ app.get("/add_items",function(req,res){
   res.render("add_items.ejs",{starters:a,mainCourse:b,desserts:c,bevarages:d,breads:e,curries:f});
 });
 });
+app.get('/order',function(req,res){
+   var tables=[];
+  database.ref('/orders').once('value',function(item) {
+    var a;
+    item.forEach(function(i){
+    a=[i.val().id]
+    var items=i.val().items;
+    a.push(items);
+  });
+   tables.push(a);
+   console.log(tables);
+   res.render("order.ejs",{orders:tables});
+  });
+});
 app.post('/start',function(req,res){
   res.redirect("/start");
 });
 app.post('/add_items',function(req,res){
+  var str=req.body.str;
   var a=req.body.pname;
-  var b=req.body.pqty;
   var c=req.body.pcategory;
   var d=req.body.pcost;
   database.ref('/items/'+c+'/'+a+'/').set({
-   'quantity':b,
-   'cost':d
+   'cost':d,
+   'features':str
   });
   res.redirect("/");
 });
@@ -290,8 +339,17 @@ app.post('/delete_item',function(req,res){
   var c=req.body.pcategory;
   let rem=database.ref('/items/'+c+'/'+a).remove();
   res.redirect("/");
-})
-
+});
+app.post('/done',function(req,res){
+  var a=req.body.table;
+  console.log(a);
+  res.redirect("/order");
+});
+app.post('/notDone',function(req,res){
+  var a=req.body.table;
+  console.log(a);
+  res.redirect("/order");
+});
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("connectedaa");
 });

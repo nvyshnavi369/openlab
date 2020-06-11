@@ -1,0 +1,40 @@
+
+<body style="background-image: url('https://cdn.pixabay.com/photo/2014/06/11/17/00/cook-366875__340.jpg');width:device-width;height:30%;margin:0%;background-repeat: no-repeat;background-size: cover;">  
+
+<div >
+  <% for(var i=0; i<orders.length; i++){ %>
+
+<h2 style="margin-top:4%;color:white;font-size: 200%;text-align: center;margin-right: 40%"><%=orders[i][0] %></h2>
+<table  style="width:30%;margin-bottom: 2%;text-align: center;margin-left:auto;margin-right:auto;">
+  <tr>
+    <th style="color:white;font-size: 150%">Item Name</th>
+    <th style="color:white;font-size: 150%">Quantity</th>
+  </tr>
+  <% Object.keys(orders[i][1]).forEach(function(item){%>
+  <tr>
+    <td style="color:white;font-size: 130%;text-align: center"><%=item %></td>
+    <td style="color:white;font-size: 130%;text-align: center;"><%=orders[i][1][item] %></td>
+  </tr>
+  <% }); %>
+</table>
+<form method="post" action="/done">
+  <input type="text" name="table" value="<%=orders[i][0] %>" style="display: none;">
+<button style="float :right;margin-right: 30%">Enter</button>
+</form>
+<form id="frm">
+  <input type="text" name="table" value="<%=orders[i][0] %>" style="display: none;">
+  <input type="text" name="warning" style="display: none;color:white;font-size: 130%;" id="no" required>
+  <button style="float :right;margin-right: 30%" onclick="no()">No</button>
+</form>
+<% } %>
+</div>
+</body>
+<script>
+  function no(){
+    var a=document.getElementById("no");
+    a.style.display = "block";
+    var f=document.getElementById("frm");
+    f.setAttribute("method","post");
+    f.setAttribute("action","/notDone");
+  }
+</script>
