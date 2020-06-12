@@ -1,5 +1,23 @@
 
-<body style="background-image: url('https://cdn.pixabay.com/photo/2014/06/11/17/00/cook-366875__340.jpg');width:device-width;height:30%;margin:0%;background-repeat: no-repeat;background-size: cover;">  
+
+
+
+
+
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+#noo {
+  width: 100%;
+  padding: 50px 0;
+  text-align: center;
+  background-color:none ;
+  margin-top: 20px;
+}
+</style>
+<body onload="init()"style="background-image: url('https://cdn.pixabay.com/photo/2014/06/11/17/00/cook-366875__340.jpg');width:device-width;height:30%;margin:0%;background-repeat: no-repeat;background-size: cover;">  
 
 <div >
   <% for(var i=0; i<orders.length; i++){ %>
@@ -23,18 +41,32 @@
 </form>
 <form id="frm">
   <input type="text" name="table" value="<%=orders[i][0] %>" style="display: none;">
-  <input type="text" name="warning" style="display: none;color:white;font-size: 130%;" id="no" required>
-  <button style="float :right;margin-right: 30%" onclick="no()">No</button>
+  <button style="float :right;margin-right: 30%" onclick="nwo()" class="btn btn-primary">No</button>
+  <div id="noo">
+<input type="text" name="pname" maxlength="50" size="35" placeholder="message" required>
+<button onclick="ss()"type="submit">send</button>
+</div>
 </form>
 <% } %>
 </div>
-</body>
 <script>
-  function no(){
-    var a=document.getElementById("no");
-    a.style.display = "block";
+   function init(){
+    var a=document.getElementById("noo");
+    a.style.display="none";
+  }
+  function nwo(){
+    var a=document.getElementById("noo");
+    if (a.style.display == "none") {
+a.style.display = "block";
+} else {
+a.style.display = "none";
+}
+ 
+  }
+  function ss(){
     var f=document.getElementById("frm");
     f.setAttribute("method","post");
     f.setAttribute("action","/notDone");
   }
 </script>
+</body>

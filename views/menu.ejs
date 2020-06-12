@@ -21,6 +21,28 @@
         f.setAttribute('method',"get");
         f.setAttribute('action','/extras');
   }
+
+
+  function speak(){
+    console.log('wishlist');
+     if ('speechSynthesis' in window) {
+    console.log('1');
+    var utterance = new SpeechSynthesisUtterance('here is your order.   you can confirm by clicking order');
+    setTimeout(() => {
+    utterance.voice =speechSynthesis.getVoices()[0];
+    },10);
+    speechSynthesis.speak(utterance);
+
+      /* speech synthesis supported */
+  }
+  else {
+    console.log('0');
+      /* speech synthesis not supported */
+  }
+    var f = document.getElementById("frm1");
+        f.setAttribute('method',"get");
+        f.setAttribute('action','/wishlist');
+  }
 </script>
 
 
@@ -168,6 +190,13 @@ background-color: #80ced6;
    <% } %>
 </table>
  <footer>
+  <div class="container">
+                <center>
+                  <form id="frm1">
+                   <button  class="btn btn-primary" onclick="speak()" style="position:fixed; right: 100;bottom:0;padding: 12px 28px;">wish list</button>       
+                    </form>
+                </center>
+            </div>
             <div class="container">
                 <center>
                 	<form id="frm">

@@ -1,0 +1,56 @@
+<script>
+   function speak(){
+    console.log('wishlist');
+     if ('speechSynthesis' in window) {
+    console.log('1');
+    var utterance = new SpeechSynthesisUtterance('your order is sent');
+    setTimeout(() => {
+    utterance.voice =speechSynthesis.getVoices()[0];
+    },10);
+    speechSynthesis.speak(utterance);
+
+      /* speech synthesis supported */
+  }
+  else {
+    console.log('0');
+      /* speech synthesis not supported */
+  }
+    var f = document.getElementById("frm1");
+        f.setAttribute('method',"post");
+        f.setAttribute('action','/order');
+      }
+</script>
+<body style="background-image: url('https://cdn.pixabay.com/photo/2014/06/11/17/00/cook-366875__340.jpg');width:device-width;height:30%;margin:0%;background-repeat: no-repeat;background-size: cover;">  
+
+<div >
+
+<h2 style="margin-top:4%;color:white;font-size: 200%;text-align: center;margin-right: 40%"><%=orders[0] %></h2>
+<table  style="width:30%;margin-bottom: 2%;text-align: center;margin-left:auto;margin-right:auto;">
+  <tr>
+    <th style="color:white;font-size: 150%">Item Name</th>
+    <th style="color:white;font-size: 150%">Quantity</th>
+  </tr>
+  <% if(orders[1]!=null){ %>
+  <% Object.keys(orders[1]).forEach(function(item){%>
+  <tr>
+    <td style="color:white;font-size: 130%;text-align: center"><%=item %></td>
+    <td style="color:white;font-size: 130%;text-align: center;"><%=orders[1][item] %></td>
+  </tr>
+  <% }); %>
+  <% } %>
+  <% if(orders[2]!=null){ %>
+  <% Object.keys(orders[2]).forEach(function(item){%>
+  <tr>
+    <td style="color:white;font-size: 130%;text-align: center"><%=item %></td>
+    <td style="color:white;font-size: 130%;text-align: center;"><%=orders[2][item] %></td>
+  </tr>
+  <% }); %>
+  <%} %>
+</table>
+<form id="frm1">
+  <input type="text" name="table" value="<%=orders[0] %>" style="display: none;">
+<button onclick="speak()" style="float :right;margin-right: 30%">Order</button>
+</form>
+</div>
+</body>
+

@@ -113,7 +113,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        if(quantity.length==0){
         for(var i=0;i<items.length;i=i+1){
           a=items[i];
-          database.ref('/orders/'+c+'/items/').update({
+          database.ref('/wish/'+c+'/items/').update({
             [a]:1
           });
         }
@@ -122,7 +122,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
         for(var i=0;i<items.length;i=i+1){
            a=items[i];
            b=quantity[i];
-          database.ref('/orders/'+c+'/items/').update({
+          database.ref('/wish/'+c+'/items/').update({
             [a]:b
           });
         }
@@ -147,7 +147,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        if(quantity.length==0){
         for(var i=0;i<items.length;i=i+1){
           a=items[i];
-          database.ref('/orders/'+c+'/extras/').update({
+          database.ref('/wish/'+c+'/extras/').update({
             [a]:1
           });
         }
@@ -156,7 +156,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
         for(var i=0;i<items.length;i=i+1){
            a=items[i];
            b=quantity[i];
-          database.ref('/orders/'+c+'/extras/').update({
+          database.ref('/wish/'+c+'/extras/').update({
             [a]:b
           });
         }
@@ -171,13 +171,28 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
 
 
 
+async function moveFbRecord(oldRef, newRef) {
+  try {
+    var snap = await oldRef.once('value');
+    await newRef.set(snap.val());
+    await oldRef.set(null);
+    console.log('Done!');
+  }catch(err) {
+       console.log(err.message);
+  }
+}
+
+
 
 
 
 app.use(express.static("public"));
 c="table1";
-app.get("/a",function(req,res){
+app.get("/",function(req,res){
   database.ref('/orders/'+c+'/').set({
+   'id':c
+  });
+   database.ref('/wish/'+c+'/').set({
    'id':c
   });
   res.render("first.ejs");
@@ -249,7 +264,7 @@ app.get("/extras",function(req,res){
   res.render("extras.ejs",{items:e});
 });
 });
-app.get("/",function(req,res){
+app.get("/add_items",function(req,res){
   var a=[];
   database.ref('/items/starters').once('value',function(item) {
   item.forEach(function(i){
@@ -320,6 +335,17 @@ app.get('/order',function(req,res){
    res.render("order.ejs",{orders:tables});
   });
 });
+app.get('/wishlist',function(req,res){
+  database.ref('/wish/'+c).once('value',function(i) {
+    var a;
+    a=[i.val().id]
+    var items=i.val().items;
+    var extras=i.val().extras;
+    a.push(items);
+    a.push(extras);
+    res.render("wish.ejs",{orders:a});
+  });
+  });
 app.post('/start',function(req,res){
   res.redirect("/start");
 });
@@ -340,6 +366,16 @@ app.post('/delete_item',function(req,res){
   let rem=database.ref('/items/'+c+'/'+a).remove();
   res.redirect("/");
 });
+app.post('/order',async function(req,res){
+  var table=req.body.table;
+  r1=database.ref('/wish/'+c+'/');
+  r2=database.ref('/orders/'+c+'/');
+  await moveFbRecord(r1,r2);
+  database.ref('/wish/'+c+'/').set({
+   'id':c
+  });
+  res.redirect("/start");
+})
 app.post('/done',function(req,res){
   var a=req.body.table;
   console.log(a);
