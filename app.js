@@ -10,7 +10,7 @@ var firebase=require('firebase');
 var uuid=require('uuid');
 const sessionId = uuid.v4();
 
-
+c="table1";
 
 
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -113,19 +113,35 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        if(quantity.length==0){
         for(var i=0;i<items.length;i=i+1){
           a=items[i];
-          database.ref('/wish/'+c+'/items/').update({
-            [a]:1
+          var b=0;
+          await database.ref('/wish/'+c+'/items/'+a).once('value',function(item) {
+             b=item.val();
+             console.log('cvbn');
+             console.log(b);
           });
-        }
-       }
-       else{
-        for(var i=0;i<items.length;i=i+1){
-           a=items[i];
-           b=quantity[i];
+          b=b+1;
           database.ref('/wish/'+c+'/items/').update({
             [a]:b
           });
         }
+       }
+       else if(items.length==quantity.length){
+        for(var i=0;i<items.length;i=i+1){
+          a=items[i];
+          b=quantity[i];
+          var d;
+          await database.ref('/wish/'+c+'/items/'+a).once('value',function(item) {
+             d=item.val();
+             console.log('cvbn');
+             console.log(d);
+          });
+          b=b+d;
+          database.ref('/wish/'+c+'/items/').update({
+            [a]:b
+          });
+        }
+       }else{
+        console.log('be clearrr');
        }
      }
      if(result.intent.displayName=="extras")
@@ -147,21 +163,127 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        if(quantity.length==0){
         for(var i=0;i<items.length;i=i+1){
           a=items[i];
-          database.ref('/wish/'+c+'/extras/').update({
-            [a]:1
+          var b=0;
+          await database.ref('/wish/'+c+'/extras/'+a).once('value',function(item) {
+             b=item.val();
+             console.log('cvbn');
+             console.log(b);
           });
-        }
-       }
-       else{
-        for(var i=0;i<items.length;i=i+1){
-           a=items[i];
-           b=quantity[i];
+          b=b+1;
           database.ref('/wish/'+c+'/extras/').update({
             [a]:b
           });
         }
        }
+       else{
+        if(items.length==quantity.length){
+        for(var i=0;i<items.length;i=i+1){
+           a=items[i];
+           b=quantity[i];
+           var d;
+          await database.ref('/wish/'+c+'/extras/'+a).once('value',function(item) {
+             d=item.val();
+             console.log('cvbn');
+             console.log(d);
+          });
+          b=b+d;
+          database.ref('/wish/'+c+'/extras/').update({
+            [a]:b
+          });
+        }
+      }else{
+        console.log('tell one by one')
+       }
+      }
      }
+     if(result.intent.displayName=="delete")
+    {
+      if(result.parameters.fields.extras.listValue!=null){
+       console.log(result.parameters.fields.extras.listValue.values);
+       list=result.parameters.fields.extras.listValue.values;
+       extras=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['stringValue'])
+        extras.push(list[i]['stringValue']);
+       }
+     }
+      if(result.parameters.fields.items.listValue!=null){
+       console.log(result.parameters.fields.items.listValue.values);
+       list=result.parameters.fields.items.listValue.values;
+       items=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['stringValue'])
+        items.push(list[i]['stringValue']);
+       }
+      }
+       console.log(result.parameters.fields.number.listValue.values);
+       list=result.parameters.fields.number.listValue.values;
+       quantity=[];
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['numberValue'])
+        quantity.push(list[i]['numberValue']);
+       }
+       if(quantity.length==0){
+        if(result.parameters.fields.items.listValue!=null){
+        for(var i=0;i<items.length;i++){
+           database.ref('/wish/'+c+'/items/'+items[i]).remove();
+        }
+      }
+      if(result.parameters.fields.extras.listValue!=null){
+        for(var i=0;i<extras.length;i++){
+           database.ref('/wish/'+c+'/extras/'+extras[i]).remove();
+        }
+      }
+       }
+       if(result.parameters.fields.items.listValue!=null){
+        if(quantity.length==items.length){
+           for(var i=0;i<items.length;i++){
+                a=items[i];
+                b=quantity[i];
+                var d;
+                await database.ref('/wish/'+c+'/items/'+a).once('value',function(item) {
+                    d=item.val();
+                    console.log('cvbn');
+                    console.log(d);
+                });
+                b=d-b;
+                if(b>0){
+                   database.ref('/wish/'+c+'/items/').update({
+                      [a]:b
+                   }); 
+                }
+                if(b==0){
+                  database.ref('/wish/'+c+'/items/'+a).remove();
+                }
+           }
+       }
+     }
+       if(result.parameters.fields.extras.listValue!=null){
+       if(quantity.length==extras.length){
+            for(var i=0;i<extras.length;i++){
+                a=extras[i];
+                b=quantity[i];
+                var d;
+                await database.ref('/wish/'+c+'/extras/'+a).once('value',function(item) {
+                    d=item.val();
+                    console.log('cvbn');
+                    console.log(d);
+                });
+                b=d-b;
+                if(b>0){
+                   database.ref('/wish/'+c+'/extras/').update({
+                      [a]:b
+                   }); 
+                }
+                if(b==0){
+                  database.ref('/wish/'+c+'/extras/'+a).remove();
+                }
+           }
+       }
+     }else{
+        console.log('be clear');
+       }
+    }
   } else {
     console.log(`  No intent matched.`);
   }
@@ -172,6 +294,9 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
 
 
 async function moveFbRecord(oldRef, newRef) {
+  database.ref('/orders/'+c+'/').set({
+   'id':c
+  });
   try {
     var snap = await oldRef.once('value');
     await newRef.set(snap.val());
@@ -187,11 +312,7 @@ async function moveFbRecord(oldRef, newRef) {
 
 
 app.use(express.static("public"));
-c="table1";
 app.get("/",function(req,res){
-  database.ref('/orders/'+c+'/').set({
-   'id':c
-  });
    database.ref('/wish/'+c+'/').set({
    'id':c
   });
@@ -264,7 +385,7 @@ app.get("/extras",function(req,res){
   res.render("extras.ejs",{items:e});
 });
 });
-app.get("/add_items",function(req,res){
+app.get("/",function(req,res){
   var a=[];
   database.ref('/items/starters').once('value',function(item) {
   item.forEach(function(i){
