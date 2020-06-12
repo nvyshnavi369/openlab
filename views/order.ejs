@@ -29,12 +29,14 @@
     <th style="color:white;font-size: 150%">Item Name</th>
     <th style="color:white;font-size: 150%">Quantity</th>
   </tr>
+  <% if(orders[i][1]!=null){ %>
   <% Object.keys(orders[i][1]).forEach(function(item){%>
   <tr>
     <td style="color:white;font-size: 130%;text-align: center"><%=item %></td>
     <td style="color:white;font-size: 130%;text-align: center;"><%=orders[i][1][item] %></td>
   </tr>
   <% }); %>
+  <% } %>
 </table>
 <form method="post" action="/done">
   <input type="text" name="table" value="<%=orders[i][0] %>" style="display: none;">
@@ -44,7 +46,7 @@
   <input type="text" name="table" value="<%=orders[i][0] %>" style="display: none;">
   <button style="float :right;margin-right: 30%" onclick="nwo()" class="btn btn-primary">No</button>
   <div id="noo">
-<input type="text" name="pname" maxlength="50" size="35" placeholder="message" required>
+<input type="text" name="message" maxlength="50" size="35" placeholder="message" required>
 <button onclick="ss()"type="submit">send</button>
 </div>
 </form>

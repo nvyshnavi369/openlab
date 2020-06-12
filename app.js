@@ -294,9 +294,6 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
 
 
 async function moveFbRecord(oldRef, newRef) {
-  database.ref('/orders/'+c+'/').set({
-   'id':c
-  });
   try {
     var snap = await oldRef.once('value');
     await newRef.set(snap.val());
@@ -313,7 +310,7 @@ async function moveFbRecord(oldRef, newRef) {
 
 app.use(express.static("public"));
 app.get("/",function(req,res){
-   database.ref('/wish/'+c+'/').set({
+   database.ref('/wish/'+c+'/').update({
    'id':c
   });
   res.render("first.ejs");
@@ -447,7 +444,7 @@ app.get('/order',function(req,res){
   database.ref('/orders').once('value',function(item) {
     var a;
     item.forEach(function(i){
-    a=[i.val().id]
+    a=[i.key]
     var items=i.val().items;
     a.push(items);
   });
@@ -459,14 +456,19 @@ app.get('/order',function(req,res){
 app.get('/wishlist',function(req,res){
   database.ref('/wish/'+c).once('value',function(i) {
     var a;
-    a=[i.val().id]
+    a=[i.key]
     var items=i.val().items;
     var extras=i.val().extras;
+    var msg=i.val().msg;
     a.push(items);
     a.push(extras);
-    res.render("wish.ejs",{orders:a});
+    res.render("wish.ejs",{c:c,orders:a,msg:msg});
   });
   });
+app.get('/bill',function(req,res){
+  
+  res.render('bill.ejs');
+})
 app.post('/start',function(req,res){
   res.redirect("/start");
 });
@@ -489,22 +491,52 @@ app.post('/delete_item',function(req,res){
 });
 app.post('/order',async function(req,res){
   var table=req.body.table;
-  r1=database.ref('/wish/'+c+'/');
-  r2=database.ref('/orders/'+c+'/');
+  r1=database.ref('/wish/'+c+'/items/');
+  r2=database.ref('/orders/'+c+'/items/');
   await moveFbRecord(r1,r2);
-  database.ref('/wish/'+c+'/').set({
-   'id':c
+  r1=database.ref('/wish/'+c+'/extras/');
+  r2=database.ref('/counter/'+c+'/extras/');
+  await moveFbRecord(r1,r2);
+  await database.ref('/wish/'+c+'/').set({
+     'msg':'wait for confirmation of previous order'
   });
   res.redirect("/start");
 })
-app.post('/done',function(req,res){
+app.post('/done',async function(req,res){
   var a=req.body.table;
-  console.log(a);
-  res.redirect("/order");
-});
-app.post('/notDone',function(req,res){
+  var array=[];
+  await database.ref('/orders/'+a+'/items/').once('value',function(item) {
+      item.forEach(function(i){
+      var name=i.key;
+      var quantity=i.val();
+      console.log('b');
+      array.push([name,quantity]);
+    });
+  });
+  console.log('first')
+  for(var i=0;i<array.length;i++){
+     await database.ref('/counter/'+a+'/items/'+array[i][0]).once('value',async function(item){
+      var s=item.val();
+      s=s+array[i][1];
+      await database.ref('/counter/'+a+'/items/').update({
+        [array[i][0]]:s
+      });
+    });
+    }
+    await database.ref('/orders/'+a).remove();
+    await database.ref('/wish/'+a+'/msg').remove();
+     res.redirect("/order");   
+});      
+app.post('/notDone',async function(req,res){
   var a=req.body.table;
+  var msg=req.body.message;
   console.log(a);
+  r1=database.ref('/wish/'+a+'/');
+  r2=database.ref('/orders/'+a+'/');
+  await moveFbRecord(r2,r1);
+  await database.ref('/wish/'+a+'/').update({
+     'msg':msg
+  });
   res.redirect("/order");
 });
 app.listen(process.env.PORT || 3000, process.env.IP, function(){
