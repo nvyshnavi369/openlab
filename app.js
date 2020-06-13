@@ -309,10 +309,15 @@ async function moveFbRecord(oldRef, newRef) {
 
 
 app.use(express.static("public"));
-app.get("/",function(req,res){
-   database.ref('/wish/'+c+'/').update({
+app.get("/a",function(req,res){
+  database.ref('/orders/'+c).remove();
+  database.ref('/counter/'+c).remove();
+  database.ref('/wish/'+c+'/').set({
    'id':c
   });
+  res.render("first.ejs");
+});
+app.get("/a",function(req,res){
   res.render("first.ejs");
 });
 app.get("/start",function(req,res){
@@ -456,18 +461,42 @@ app.get('/order',function(req,res){
 app.get('/wishlist',function(req,res){
   database.ref('/wish/'+c).once('value',function(i) {
     var a;
-    a=[i.key]
+    a=[i.key];
+    if(i.val()!=null){
     var items=i.val().items;
     var extras=i.val().extras;
     var msg=i.val().msg;
     a.push(items);
     a.push(extras);
+  }
     res.render("wish.ejs",{c:c,orders:a,msg:msg});
   });
   });
 app.get('/bill',function(req,res){
-  
-  res.render('bill.ejs');
+  var array;
+  var total=0;
+  var names=[];
+  var quantity=[];
+  var cost=[];
+  var i=0;
+  database.ref('counter/'+c+'/items').once('value',async function(item){
+    array=item.val();
+    if(array!=null){
+    await database.ref('items/').once('value',function(item){
+      item.forEach(function(i){
+        i.forEach(function(name){
+          if(Object.keys(array).includes(name.key)){
+            total=total+name.val().cost*array[name.key];
+            names.push(name.key);
+            quantity.push(array[name.key]);
+            cost.push(name.val().cost);
+          }
+        });
+      });
+    });
+  }
+    res.render('bill.ejs',{total:total,name:names,quantity:quantity,cost:cost});
+  });
 })
 app.post('/start',function(req,res){
   res.redirect("/start");

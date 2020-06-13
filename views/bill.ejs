@@ -1,0 +1,76 @@
+
+<title>Restaurant</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{
+background-image: url('https://thumbs.dreamstime.com/z/pay-restaurant-bill-cash-reciept-coins-plate-dark-wooden-background-top-view-164299454.jpg');
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+}
+a{
+text-decoration: none;
+color:#FFF;
+}
+.caption
+{
+text-align: center;
+}
+table, th, td {
+font-size: 20px;
+background-color: rgb();
+text-align: center;
+}
+th, td {
+padding: 15px;
+}
+th{
+background-color: rgb(0,139,139);
+}
+td{
+background-color: rgb(211,211,211);
+}
+.jumbotron{
+background-color: #80ced6;
+}
+</style>
+
+<body>
+	<% if(name.length >0){ %>
+<div class="container">
+<div class="jumbotron">
+<h1 style="text-align:center; ">Your bill...!!!</h1>
+</div>
+<table align="center" style="width:70% ">
+<tr>
+<th>Items</th>
+<th>Quantity</th>
+<th>Price</th>
+</tr>
+<% for(var i=0; i<name.length; i++){ %>
+<tr>
+<td><%=name[i] %></td>
+<td><%=quantity[i] %></td>
+<td><%=cost[i] %></td>
+</tr>
+<% } %>
+</table>
+<p align="center" style=" font-size: 2em;
+font-style:bolder; ">Total <span class="price" style="color:black"><b style=" font-size: 1.5em;
+font-style:bolder; "><%=total %></b></span></p>
+<div class="container">
+<center>
+<form method="get" action="/">
+<button class="btn btn-primary" style="position:relative;">pay</button>
+</form>
+</center>
+</div>
+<% } %>
+</div>
+<div class="jumbotron">
+	<h1 style="text-align:center; ">ENJOY YOUR FOOD</h1>
+</div>
+</body>
