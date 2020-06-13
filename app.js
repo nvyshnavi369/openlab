@@ -11,6 +11,7 @@ var uuid=require('uuid');
 const sessionId = uuid.v4();
 
 c="table1";
+var features=[];
 
 
 app.use(bodyParser.urlencoded({ extended: true })); 
@@ -65,8 +66,8 @@ app.post("/send-msg",(req,res)=>{
  */
 async function runSample(msg,projectId = 'extras-ckolmc') {
   
-  
-
+  var aa=0;
+  features=[];
   // Create a new session
   const sessionClient = new dialogflow.SessionsClient({
       apiKey:"C:/Users/ASUS/Desktop/openlab/EXTRAS-376aed4087b5.json"
@@ -144,7 +145,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
         console.log('be clearrr');
        }
      }
-     if(result.intent.displayName=="extras")
+     else if(result.intent.displayName=="extras")
     {
        console.log(result.parameters.fields.extras.listValue.values);
        list=result.parameters.fields.extras.listValue.values;
@@ -196,7 +197,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        }
       }
      }
-     if(result.intent.displayName=="delete")
+     else if(result.intent.displayName=="delete")
     {
       if(result.parameters.fields.extras.listValue!=null){
        console.log(result.parameters.fields.extras.listValue.values);
@@ -284,11 +285,19 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
         console.log('be clear');
        }
     }
+    else if(result.intent.displayName=="filter"){
+      console.log(result.parameters.fields.features.listValue.values);
+       list=result.parameters.fields.features.listValue.values;
+       for(var i=0;i<list.length;i=i+1){
+        console.log(list[i]['stringValue']);
+        features.push(list[i]['stringValue']);
+       }
+       aa=10;
+    }
   } else {
     console.log(`  No intent matched.`);
   }
-
-  return result.fulfillmentText;
+  return [result.fulfillmentText,aa];
 }
 
 
@@ -304,12 +313,14 @@ async function moveFbRecord(oldRef, newRef) {
   }
 }
 
-
+function findCommonElements3(arr1, arr2) { 
+    return arr1.some(item => arr2.includes(item)) 
+} 
 
 
 
 app.use(express.static("public"));
-app.get("/a",function(req,res){
+app.get("/",function(req,res){
   database.ref('/orders/'+c).remove();
   database.ref('/counter/'+c).remove();
   database.ref('/wish/'+c+'/').set({
@@ -497,7 +508,87 @@ app.get('/bill',function(req,res){
   }
     res.render('bill.ejs',{total:total,name:names,quantity:quantity,cost:cost});
   });
-})
+});
+app.get('/filter',async function(req,res){
+  console.log('filtered');
+  console.log(features);
+  var a=[];
+  await database.ref('/items/starters').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    aa=[name,cost];
+    var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       a.push(aa);
+    }
+  });
+  console.log(a);
+});
+  var b=[];
+  await database.ref('/items/mainCourse').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    bb=[name,cost];
+    var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       b.push(bb);
+    }
+  });
+});
+  var c=[];
+  await database.ref('/items/desserts').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    cc=[name,cost];
+    var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       c.push(cc);
+    }
+  });
+});
+  var d=[];
+  await database.ref('/items/bevarages').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    dd=[name,cost];
+   var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       d.push(dd);
+    }
+  });
+});
+  var f=[];
+ await database.ref('/items/curries').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    ff=[name,cost];
+   var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       f.push(ff);
+    }
+  });
+});
+  var e=[];
+  await database.ref('/items/breads').once('value',function(item) {
+  item.forEach(function(i){
+    var name=i.key;
+    var cost=i.val().cost;
+    ee=[name,cost];
+   var z=i.val().features.split(" ");
+    if(findCommonElements3(features,z)){
+       e.push(ee);
+    }
+  });
+});
+  console.log('done');
+  console.log(a);
+  res.render("menu.ejs",{starters:a,mainCourse:b,desserts:c,bevarages:d,breads:e,curries:f});
+});
 app.post('/start',function(req,res){
   res.redirect("/start");
 });
