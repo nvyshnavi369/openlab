@@ -237,7 +237,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
       }
        }
        if(result.parameters.fields.items.listValue!=null){
-        if(quantity.length==items.length){
+        if(quantity.length==items.length &&  extras.length==0){
            for(var i=0;i<items.length;i++){
                 a=items[i];
                 b=quantity[i];
@@ -260,7 +260,7 @@ async function runSample(msg,projectId = 'extras-ckolmc') {
        }
      }
        if(result.parameters.fields.extras.listValue!=null){
-       if(quantity.length==extras.length){
+       if(quantity.length==extras.length && items.length==0){
             for(var i=0;i<extras.length;i++){
                 a=extras[i];
                 b=quantity[i];

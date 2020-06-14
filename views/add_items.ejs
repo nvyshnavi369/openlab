@@ -85,6 +85,7 @@ x="37" y="86">DELICIOUS</text>
 </svg>
 <body onload="init()">
 <div class="container">
+<% if(starters.length>0){ %>
 <h2>Starters</h2>
 <table style="width:100%;margin-left:auto;margin-right:auto;">
 <tr>
@@ -98,6 +99,8 @@ x="37" y="86">DELICIOUS</text>
 </tr>
 <% } %>
 </table>
+<% } %>
+  <% if(mainCourse.length>0){ %>
 <h2>Main course</h2>
 <table style="width:100%">
 <tr>
@@ -111,6 +114,8 @@ x="37" y="86">DELICIOUS</text>
 </tr>
 <% } %>
 </table>
+<% } %>
+  <% if(desserts.length>0){ %>
 <h2>Desserts</h2>
 <table style="width:100%">
 <tr>
@@ -124,6 +129,8 @@ x="37" y="86">DELICIOUS</text>
 </tr>
 <% } %>
 </table>
+<% } %>
+  <% if(bevarages.length>0){ %>
 <h2>Beverages</h2>
 <table style="width:100%">
 <tr>
@@ -137,6 +144,8 @@ x="37" y="86">DELICIOUS</text>
 </tr>
 <% } %>
 </table>
+<% } %>
+  <% if(breads.length>0){ %>
 <h2>Breads</h2>
 <table style="width:100%">
 <tr>
@@ -150,6 +159,22 @@ x="37" y="86">DELICIOUS</text>
 </tr>
 <% } %>
 </table>
+<% } %>
+  <% if(curries.length>0){ %>
+<h2>Curries</h2>
+<table style="width:100%">
+<tr>
+<th>Item</th>
+<th>Price</th>
+</tr>
+<% for(var i=0; i<curries.length; i++){ %>
+<tr>
+<td><%=curries[i][0] %></td>
+<td><%=curries[i][1] %></td>
+</tr>
+<% } %>
+</table>
+<% } %>
 </div>
 <footer style="position:fixed; right: 0;bottom:0;padding: 12px 28px;">
 <button onclick="myFunction()" class="btn btn-primary"> ADD PRODUCTS </button>

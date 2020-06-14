@@ -92,7 +92,7 @@
          .then(response => {
           console.log(response);
         //  serverMessage(response.Reply);
-          speechSynthesis.speak( new SpeechSynthesisUtterance(response.Reply));
+          speechSynthesis.speak( new SpeechSynthesisUtterance(response.Reply[0]));
 
         location.reload();
           
